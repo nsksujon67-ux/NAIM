@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bangladesh Technical Training Institute</title>
+<!-- Pinned versions (unpkg / unpinned CDN এড়ানো হয়েছে) -->
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<style>
+  body { background:#eef5f4; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Bengali",Helvetica,Arial,sans-serif; }
+</style>
+</head>
+<body class="min-h-screen flex justify-center">
+<div class="w-full max-w-md bg-[#eef5f4] min-h-screen shadow-lg flex flex-col">
+
+  <header class="bg-[#112233] text-white px-5 py-7">
+    <div class="flex items-center space-x-3.5 mb-4">
+      <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shrink-0 border-2 border-teal-500">
+        <span class="text-[#112233] font-extrabold text-xs text-center leading-tight">BTTI<br>LOGO</span>
+      </div>
+      <h1 class="text-[22px] font-bold leading-snug tracking-tight">Bangladesh Technical<br>Training Institute</h1>
+    </div>
+    <p class="text-[15px] text-gray-200 leading-relaxed mb-4">Students, marks and documents for your training centre, in one place.</p>
+    <p class="text-sm text-gray-300">Hotline: <a href="tel:+8809638320298" class="font-bold text-white">+880 9638-320298</a></p>
+  </header>
+
+  <main class="p-5 space-y-6 flex-grow">
+
+    <!-- Tabs -->
+    <div class="bg-white p-1.5 rounded-xl shadow-sm flex text-sm font-semibold" role="tablist">
+      <button id="tab-admin" role="tab" onclick="switchLoginTab('admin')" class="flex-1 py-2.5 px-2 rounded-lg bg-[#0d8a72] text-white transition">Admin Login</button>
+      <button id="tab-center" role="tab" onclick="switchLoginTab('center')" class="flex-1 py-2.5 px-2 rounded-lg text-gray-600 hover:text-gray-900 transition">Center Login</button>
+      <button id="tab-student" role="tab" onclick="switchLoginTab('student')" class="flex-1 py-2.5 px-2 rounded-lg text-gray-600 hover:text-gray-900 transition">Student Login</button>
+    </div>
+
+    <!-- Admin -->
+    <form id="form-admin" class="space-y-4" onsubmit="return handleLogin(event,'admin')" novalidate>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">Sign in</h2>
+        <p class="text-sm text-gray-600 mt-1">Enter the mobile number and password for your account.</p>
+      </div>
+      <div class="space-y-1.5">
+        <label for="adminMobile" class="block text-sm font-medium text-gray-700">Mobile number</label>
+        <input type="tel" id="adminMobile" inputmode="numeric" maxlength="11" autocomplete="username" placeholder="01XXXXXXXXX"
+          class="w-full px-3.5 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-[#0d8a72]">
+      </div>
+      <div class="space-y-1.5">
+        <label for="adminPass" class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password" id="adminPass" autocomplete="current-password" placeholder="••••••••"
+          class="w-full px-3.5 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-[#0d8a72]">
+      </div>
+      <div class="flex items-center justify-between text-sm">
+        <label class="flex items-center space-x-2 text-gray-700 cursor-pointer">
+          <input type="checkbox" onchange="togglePass('adminPass')" class="w-4 h-4 rounded border-gray-300 text-[#0d8a72]">
+          <span>Show password</span>
+        </label>
+        <a href="tel:01884383694" class="text-[#0d8a72] underline font-medium">Forgot password?</a>
+      </div>
+      <button type="submit" class="w-full py-3 bg-[#0d8a72] hover:bg-[#0a705c] text-white font-semibold rounded-lg shadow-sm transition">Sign in</button>
+    </form>
+
+    <!-- Center -->
+    <form id="form-center" class="space-y-4 hidden" onsubmit="return handleLogin(event,'center')" novalidate>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">Center login</h2>
+        <p class="text-sm text-gray-600 mt-1">Enter the Center ID and Center Password given to your center by the administrator.</p>
+      </div>
+      <div class="space-y-1.5">
+        <label for="centerId" class="block text-sm font-medium text-gray-700">Center ID</label>
+        <input type="text" id="centerId" autocomplete="username" placeholder="Enter Center ID"
+          class="w-full px-3.5 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-[#0d8a72]">
+      </div>
+      <div class="space-y-1.5">
+        <label for="centerPass" class="block text-sm font-medium text-gray-700">Center Password</label>
+        <input type="password" id="centerPass" autocomplete="current-password" placeholder="••••••••"
+          class="w-full px-3.5 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-[#0d8a72]">
+      </div>
+      <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+        <input type="checkbox" onchange="togglePass('centerPass')" class="w-4 h-4 rounded border-gray-300 text-[#0d8a72]">
+        <span>Show password</span>
+      </label>
+      <button type="submit" class="w-full py-3 bg-[#0d8a72] hover:bg-[#0a705c] text-white font-semibold rounded-lg shadow-sm transition">Center sign in</button>
+    </form>
+
+    <!-- Student -->
+    <form id="form-student" class="space-y-4 hidden" onsubmit="return handleLogin(event,'student')" novalidate>
+      <div>
+        <h2 class="text-2xl font-bold text-gray-900">Student login</h2>
+        <p class="text-sm text-gray-600 mt-1">Enter your Student Roll or Registration number and password to view results.</p>
+      </div>
+      <div class="space-y-1.5">
+        <label for="studentRoll" class="block text-sm font-medium text-gray-700">Roll / Registration Number</label>
+        <input type="text" id="studentRoll" autocomplete="username" placeholder="Enter Roll / Reg No."
+          class="w-full px-3.5 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-[#0d8a72]">
+      </div>
+      <div class="space-y-1.5">
+        <label for="studentPass" class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password" id="studentPass" autocomplete="current-password" placeholder="••••••••"
+          class="w-full px-3.5 py-3 bg-white border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:border-[#0d8a72]">
+      </div>
+      <label class="flex items-center space-x-2 text-sm text-gray-700 cursor-pointer">
+        <input type="checkbox" onchange="togglePass('studentPass')" class="w-4 h-4 rounded border-gray-300 text-[#0d8a72]">
+        <span>Show password</span>
+      </label>
+      <button type="submit" class="w-full py-3 bg-[#0d8a72] hover:bg-[#0a705c] text-white font-semibold rounded-lg shadow-sm transition">Student sign in</button>
+    </form>
+
+    <!-- Login message -->
+    <div id="login-msg" class="hidden p-3 rounded-lg text-sm" role="alert"></div>
+
+    <div class="relative flex py-2 items-center">
+      <div class="flex-grow border-t border-gray-300"></div>
+      <span class="mx-3 text-gray-500 text-xs font-medium uppercase">Or Verify Document</span>
+      <div class="flex-grow border-t border-gray-300"></div>
+    </div>
+
+    <!-- QR verify -->
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 space-y-3">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-gray-800 text-base">Verify Certificate</h3>
+          <p class="text-xs text-gray-500">Scan QR code from student certificate or ID card</p>
+        </div>
+        <button id="btn-scan-qr" onclick="toggleQRScanner()" class="px-3.5 py-2 bg-[#112233] hover:bg-gray-800 text-white text-xs font-semibold rounded-lg transition">Scan QR</button>
+      </div>
+      <div id="qr-scanner-container" class="hidden pt-2">
+        <div id="reader" class="w-full rounded-lg overflow-hidden border border-gray-300"></div>
+        <button onclick="stopQRScanner()" class="mt-2 w-full py-2 bg-red-600 text-white text-xs font-semibold rounded-lg">Close Camera</button>
+      </div>
+      <div id="qr-result" class="hidden p-3 rounded-lg text-sm break-words" role="status"></div>
+    </div>
+  </main>
+
+  <footer class="p-4 text-center text-xs text-gray-500 border-t border-gray-200">
+    &copy; 2026 Bangladesh Technical Training Institute. All rights reserved.
+  </footer>
+</div>
+
+<script>
+/* ===== কনফিগ =====
+   আপনার ব্যাকএন্ডের URL এখানে দিন, যেমন: "https://api.example.com"
+   খালি থাকলে লগইন/যাচাই কাজ করবে না এবং স্পষ্ট বার্তা দেখাবে (ভুয়া সফল বার্তা নয়)। */
+const API_BASE = "";
+
+let html5QrCode = null;
+let scannerRunning = false;
+
+/* ---------- Helpers ---------- */
+function showBox(el, text, type) {
+  const styles = {
+    error: "bg-red-50 border border-red-200 text-red-800",
+    ok: "bg-teal-50 border border-teal-200 text-teal-900",
+    info: "bg-amber-50 border border-amber-200 text-amber-900"
+  };
+  el.className = "p-3 rounded-lg text-sm break-words " + (styles[type] || styles.info);
+  el.textContent = text;            // textContent => XSS নিরাপদ
+}
+
+/* ---------- Tabs ---------- */
+function switchLoginTab(role) {
+  ["admin", "center", "student"].forEach(r => {
+    const tab = document.getElementById("tab-" + r);
+    const form = document.getElementById("form-" + r);
+    const active = r === role;
+    tab.classList.toggle("bg-[#0d8a72]", active);
+    tab.classList.toggle("text-white", active);
+    tab.classList.toggle("text-gray-600", !active);
+    tab.setAttribute("aria-selected", String(active));
+    form.classList.toggle("hidden", !active);
+  });
+  document.getElementById("login-msg").className = "hidden";
+}
+
+function togglePass(id) {
+  const el = document.getElementById(id);
+  el.type = el.type === "password" ? "text" : "password";
+}
+
+/* ---------- Login ---------- */
+async function handleLogin(e, role) {
+  e.preventDefault();
+  const msg = document.getElementById("login-msg");
+  const map = {
+    admin:   ["adminMobile", "adminPass"],
+    center:  ["centerId", "centerPass"],
+    student: ["studentRoll", "studentPass"]
+  };
+  const id = document.getElementById(map[role][0]).value.trim();
+  const pass = document.getElementById(map[role][1]).value;
+
+  if (!id || !pass) { showBox(msg, "সব ঘর পূরণ করুন।", "error"); return false; }
+  if (role === "admin" && !/^01[3-9]\d{8}$/.test(id)) {
+    showBox(msg, "সঠিক ১১ সংখ্যার মোবাইল নম্বর দিন (01XXXXXXXXX)।", "error");
+    return false;
+  }
+  if (!API_BASE) {
+    showBox(msg, "লগইন সার্ভার এখনও যুক্ত করা হয়নি। কোডের API_BASE সেট করুন।", "info");
+    return false;
+  }
+
+  const btn = e.submitter; if (btn) btn.disabled = true;
+  try {
+    const res = await fetch(API_BASE + "/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ role, id, password: pass })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.message || "লগইন ব্যর্থ হয়েছে।");
+    showBox(msg, "লগইন সফল হয়েছে।", "ok");
+    if (data.redirect) location.href = data.redirect;
+  } catch (err) {
+    showBox(msg, err.message || "নেটওয়ার্ক সমস্যা, আবার চেষ্টা করুন।", "error");
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+  return false;
+}
+
+/* ---------- QR Scanner ---------- */
+function toggleQRScanner() {
+  const container = document.getElementById("qr-scanner-container");
+  if (container.classList.contains("hidden")) {
+    document.getElementById("qr-result").className = "hidden";
+    container.classList.remove("hidden");
+    startQRScanner();
+  } else {
+    stopQRScanner();
+  }
+}
+
+function startQRScanner() {
+  const container = document.getElementById("qr-scanner-container");
+  if (typeof Html5Qrcode === "undefined") {
+    showBox(document.getElementById("qr-result"), "স্ক্যানার লাইব্রেরি লোড হয়নি। ইন্টারনেট চেক করুন।", "error");
+    container.classList.add("hidden");
+    return;
+  }
+  html5QrCode = new Html5Qrcode("reader");
+  html5QrCode.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: { width: 220, height: 220 } },
+    (decodedText) => {
+      if (!scannerRunning) return;     // একাধিকবার ট্রিগার ঠেকাতে
+      stopQRScanner();
+      verifyCertificate(decodedText);
+    },
+    () => {}
+  ).then(() => { scannerRunning = true; })
+   .catch(() => {
+     scannerRunning = false;
+     container.classList.add("hidden");
+     showBox(document.getElementById("qr-result"),
+       "ক্যামেরা চালু করা যায়নি। অনুমতি দিন এবং পেজটি HTTPS-এ খুলুন।", "error");
+   });
+}
+
+function stopQRScanner() {
+  const container = document.getElementById("qr-scanner-container");
+  scannerRunning = false;
+  container.classList.add("hidden");
+  if (html5QrCode) {
+    const qr = html5QrCode; html5QrCode = null;
+    qr.stop().then(() => qr.clear()).catch(() => {});
+  }
+}
+
+/* ---------- Certificate verification ---------- */
+async function verifyCertificate(code) {
+  const box = document.getElementById("qr-result");
+  code = String(code).trim().slice(0, 500);
+
+  if (!API_BASE) {
+    // সার্ভার ছাড়া "Verified" দেখানো যাবে না — যে কেউ জাল QR বানাতে পারে
+    showBox(box, "QR পড়া হয়েছে: " + code + "\n(যাচাই সার্ভার যুক্ত না থাকায় সত্যতা নিশ্চিত করা যায়নি।)", "info");
+    return;
+  }
+  showBox(box, "যাচাই করা হচ্ছে...", "info");
+  try {
+    const res = await fetch(API_BASE + "/certificates/verify?code=" + encodeURIComponent(code));
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.valid) {
+      showBox(box, "✔ যাচাইকৃত — " + (data.name || "") + (data.course ? " | " + data.course : ""), "ok");
+    } else {
+      showBox(box, "✖ এই সার্টিফিকেট পাওয়া যায়নি বা বৈধ নয়।", "error");
+    }
+  } catch (err) {
+    showBox(box, "সার্ভারের সাথে সংযোগ করা যায়নি।", "error");
+  }
+}
+</script>
+</body>
+</html>
